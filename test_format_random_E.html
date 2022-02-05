@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
     <title>卒試演習E</title>
@@ -9,19 +8,15 @@
         body {
             font-family: sans-serif;
         }
-
         #text {
             background-color: #ccecf8;
         }
-
         h1 {
             font-size: 18px;
         }
-
         #concept {
             font-size: 6px;
         }
-
         #check>input {
             margin: 8px;
             font-size: 15px;
@@ -30,50 +25,39 @@
             white-space: pre-line;
             word-break: break-all;
         }
-
         #question {
             font-size: 15px;
         }
-
         table,
         td,
         th {
             border: 2px #808080 solid;
         }
-
         #check {
             margin: 20px;
             display: flex;
             flex-flow: column;
         }
-
-
         #judge {
             font-size: 15px;
         }
-
         #yourAnswer {
             font-size: 13px;
         }
-
         #correct_answer {
             font-size: 13px;
         }
-
         #explanation {
             font-size: 15px;
         }
-
         #nextQuestion {
             text-align: center;
         }
-
         #btn3 {
             margin: 0 auto;
             background-color: #FFFF77;
             border-radius: 3px;
         }
-
         #btn4 {
             background-color: #f3b7cc;
             border-radius: 3px;
@@ -102,11 +86,6 @@
             <p id="table"></p>
         </div>
         <div id="check">
-            <input class="form-control btn btn-outline-success" type="button" id="a" onclick="buttonClick('a');">
-            <input class="form-control btn btn-outline-success" type="button" id="b" onclick="buttonClick('b');">
-            <input class="form-control btn btn-outline-success" type="button" id="c" onclick="buttonClick('c');">
-            <input class="form-control btn btn-outline-success" type="button" id="d" onclick="buttonClick('d');">
-            <input class="form-control btn btn-outline-success" type="button" id="e" onclick="buttonClick('e');">
         </div>
         <div>
             <br>
@@ -175,10 +154,25 @@
         let img = document.getElementById("image_place");
         img.src = "";
         let arr = ['a', 'b', 'c', 'd', 'e']
-        for (const elem of arr) {
-            document.getElementById(elem).value = choices[elem]
-        }
         let yourChoices = [];
+        let make_choices = function () {
+            let parentDiv = document.getElementById("check")
+            for (const elem of arr) {
+                let child_choices = create_and_setAttr("input", elem, "form-control btn btn-outline-success", value = choices[elem], type = "button", onclick = `buttonClick('${elem}')`)
+                parentDiv.appendChild(child_choices)
+            }
+        }
+        make_choices();
+        function create_and_setAttr(elem, id, class_name, value = "", type = "", onclick = "") {
+            let e = document.createElement(elem)
+            e.setAttribute("id", id)
+            e.setAttribute("class", class_name)
+            if (value != "") { e.setAttribute("value", value) }
+            if (type != "") { e.setAttribute("type", type) }
+            if (onclick != "") { e.setAttribute("onclick", onclick) }
+            return e
+        }
+
         function reset() {
             yourChoices = [];
             q_and_a = data[i]
@@ -203,6 +197,7 @@
                 document.getElementById(elem).disabled = false
             }
         }
+        //選択肢ボタン
         function buttonClick(i) {
             yourChoices.push(i);
             yourChoices.sort()
@@ -244,7 +239,7 @@
                 yourChoices.length = 0;
             }
         };
-
+        //「次の問題」ボタン
         function buttonClick1() {
             for (let j = 0; j < radio_len; j++) {
                 if (radio.item(j).checked) {
@@ -265,6 +260,7 @@
             }
             scrollToTop();
         }
+        //ラジオボタン
         function buttonClick2(s) {
             if (s == "r") {
                 i = getRandomInt(0, data.length)
@@ -272,7 +268,7 @@
             }
             reset();
         }
-
+        //問題選択ボタン
         function buttonClick3() {
             i = Number(document.getElementById("q_num").value) - 1;
             if (!(i > 0 && i < data.length)) {
